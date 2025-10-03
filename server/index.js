@@ -10,9 +10,29 @@ const PORT = 3000;
 
 // Middleware Setup
 // Allow React frontend (on port 5173) to communicate with this server (on port 3000)
+// Define all allowed frontend origins
+const allowedOrigins = [
+    'http://localhost:5173', // For local development
+    'https://todo-app-8qp5.vercel.app' // Your deployed Vercel URL
+];
+
 app.use(cors({
-    origin: 'http://localhost:5173' 
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps, curl, or Postman)
+        if (!origin) return callback(null, true); 
+        
+        // Check if the origin is in the allowed list
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    // Important: We send Content-Type and Authorization headers, so they must be allowed.
+    methods: 'GET,POST', 
+    allowedHeaders: 'Content-Type,Authorization' 
 }));
+
 app.use(express.json());
 
 // Initialize the Gemini AI Client

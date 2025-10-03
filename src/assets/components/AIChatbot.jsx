@@ -8,7 +8,7 @@ const AIChatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Endpoint points to your LOCAL BACKEND SERVER
-  const LOCAL_BACKEND_ENDPOINT = 'http://localhost:3000/api/chat'; 
+  const LOCAL_BACKEND_ENDPOINT = 'https://todo-app-1-ru42.onrender.com/api/chat'; 
 
   const sendMessage = async () => {
     if (input.trim() === '' || isLoading) return;
