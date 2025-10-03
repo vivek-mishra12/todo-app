@@ -27,4 +27,4 @@ node_modules/
 dist/
 build/
 .env
-
+server/node_modules

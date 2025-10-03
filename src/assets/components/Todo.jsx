@@ -46,7 +46,7 @@ const Todo = () => {
   }, [todoList]);
 
   return (
-    <div className="bg-white place-self-center w-[95%] sm:w-11/12 md:w-8/12 lg:w-6/12 xl:w-4/12 flex flex-col p-5 sm:p-7 min-h-[500px] sm:min-h-[550px] rounded-xl shadow-lg">
+    <div className="bg-white flex flex-col p-5 sm:p-7 min-h-[500px] sm:min-h-[550px] rounded-xl shadow-lg">
       {/* title */}
       <div className="flex items-center mt-5 gap-2">
         <i className="fa-solid fa-clipboard-list text-2xl sm:text-3xl text-blue-500"></i>
