@@ -2,32 +2,41 @@ import React, { useState } from 'react';
 
 const AIChatbot = () => {
   const [messages, setMessages] = useState([
-    { text: "Hello! I am your AI assistant. Ask me anything.", sender: "bot" }
+    { text: "Hey! I'm Goku! Ask me anything! 💪🔥", sender: "bot" }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Endpoint points to your LOCAL BACKEND SERVER
-  const LOCAL_BACKEND_ENDPOINT = 'https://todo-app-1-ru42.onrender.com/api/chat'; 
+  const LOCAL_BACKEND_ENDPOINT = 'https://todo-app-1-ru42.onrender.com/api/chat';
 
   const sendMessage = async () => {
     if (input.trim() === '' || isLoading) return;
 
     const userMessage = { text: input.trim(), sender: 'user' };
-    
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
     try {
-      // Fetch request to the local secure endpoint
       const response = await fetch(LOCAL_BACKEND_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        // Send only the prompt. The backend adds the secret key.
-        body: JSON.stringify({ prompt: userMessage.text }),
+        body: JSON.stringify({
+          prompt: `
+You are Goku from Dragon Ball.
+Personality:
+- Energetic
+- Friendly
+- Loves fighting and training
+- Simple language
+- Keep answers short (1-3 sentences max)
+- Add excitement sometimes
+
+User: ${userMessage.text}
+`
+        }),
       });
 
       if (!response.ok) {
@@ -36,44 +45,44 @@ const AIChatbot = () => {
       }
 
       const data = await response.json();
-      const botReply = data.reply || "Sorry, I couldn't get a response.";
+      const botReply = data.reply || "Huh? I didn't get that!";
 
-      setMessages((prevMessages) => [
-        ...prevMessages,
+      setMessages((prev) => [
+        ...prev,
         { text: botReply, sender: 'bot' }
       ]);
 
     } catch (error) {
       console.error("Chat Request Error:", error);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: `Error: ${error.message}`, sender: 'bot' }
+      setMessages((prev) => [
+        ...prev,
+        { text: `Oops! Something went wrong!`, sender: 'bot' }
       ]);
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       sendMessage();
     }
   };
 
-  // Tailwind CSS classes for UI
   return (
     <div className="flex flex-col h-full bg-gray-50 rounded-xl p-5 shadow-lg">
-      <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-blue-600">AI Chatbot</h2>
-      
-      {/* Message Area */}
+      <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-blue-600">
+        Goku AI 🔥
+      </h2>
+
       <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div 
+            <div
               className={`max-w-xs sm:max-w-md p-3 rounded-lg text-sm sm:text-base ${
-                msg.sender === 'user' 
-                  ? 'bg-blue-500 text-white rounded-br-none' 
-                  : 'bg-gray-200 text-slate-800 rounded-tl-none'
+                msg.sender === 'user'
+                  ? 'bg-blue-500 text-white rounded-br-none'
+                  : 'bg-orange-200 text-slate-800 rounded-tl-none'
               }`}
             >
               {msg.text}
@@ -82,14 +91,13 @@ const AIChatbot = () => {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-gray-200 text-slate-800 p-3 rounded-lg rounded-tl-none text-sm italic">
-              Bot is typing...
+            <div className="bg-orange-200 text-slate-800 p-3 rounded-lg rounded-tl-none text-sm italic">
+              Goku is powering up...
             </div>
           </div>
         )}
       </div>
 
-      {/* Input Area */}
       <div className="flex gap-2">
         <input
           type="text"
@@ -97,13 +105,13 @@ const AIChatbot = () => {
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={handleKeyPress}
           className="flex-1 p-3 border border-gray-300 rounded-full outline-none focus:border-blue-500"
-          placeholder="Ask the AI a question..."
+          placeholder="Ask Goku something..."
           disabled={isLoading}
         />
         <button
           onClick={sendMessage}
           disabled={isLoading || input.trim() === ''}
-          className="bg-blue-600 text-white w-20 h-12 rounded-full font-medium transition-all hover:bg-blue-700 disabled:bg-gray-400"
+          className="bg-orange-500 text-white w-20 h-12 rounded-full font-medium transition-all hover:bg-orange-600 disabled:bg-gray-400"
         >
           Send
         </button>
